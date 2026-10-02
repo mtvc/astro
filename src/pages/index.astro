@@ -1,11 +1,287 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { defaultLandingPage } from '../data/landing-page';
+import type { LandingPage } from '../types/landing-page';
+import { getLandingPage } from '../lib/sanity';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+let cmsPage: LandingPage | null = null;
+try {
+	cmsPage = await getLandingPage();
+} catch (error) {
+	console.warn('Sanity content is unavailable; rendering the local page data.', error);
+}
+
+const page: LandingPage = {
+	...defaultLandingPage,
+	...cmsPage,
+	hero: { ...defaultLandingPage.hero, ...cmsPage?.hero },
+	benefitsHeading: { ...defaultLandingPage.benefitsHeading, ...cmsPage?.benefitsHeading },
+	benefits: cmsPage?.benefits?.length ? cmsPage.benefits : defaultLandingPage.benefits,
+	chaptersHeading: { ...defaultLandingPage.chaptersHeading, ...cmsPage?.chaptersHeading },
+	chapters: cmsPage?.chapters?.length ? cmsPage.chapters : defaultLandingPage.chapters,
+	author: { ...defaultLandingPage.author, ...cmsPage?.author },
+	reviewsHeading: { ...defaultLandingPage.reviewsHeading, ...cmsPage?.reviewsHeading },
+	testimonials: cmsPage?.testimonials?.length ? cmsPage.testimonials : defaultLandingPage.testimonials,
+	pricingHeading: { ...defaultLandingPage.pricingHeading, ...cmsPage?.pricingHeading },
+	plans: cmsPage?.plans?.length ? cmsPage.plans : defaultLandingPage.plans,
+	faqHeading: { ...defaultLandingPage.faqHeading, ...cmsPage?.faqHeading },
+	faqs: cmsPage?.faqs?.length ? cmsPage.faqs : defaultLandingPage.faqs,
+};
+const hero = page.hero;
+const image = (source: string | undefined, fallback: string) => source ?? fallback;
+const authorPortrait = image(page.author.portraitUrl, defaultLandingPage.author.portraitUrl);
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Mastering Modern Web Development | The Ultimate Guide" description={hero.description}>
+	<header class="site-header">
+		<div class="header-inner">
+			<a class="wordmark" href="#top" aria-label="Back to top">
+				<span>MMWD</span>
+				<span class="edition-tag">v2026.1</span>
+			</a>
+			<nav class="main-nav" aria-label="Main navigation">
+				<a href="#benefits">What You'll Learn</a>
+				<a href="#author">Author</a>
+				<a href="#chapters">Curriculum</a>
+				<a href="#reviews">Reviews</a>
+				<a href="#pricing">Pricing</a>
+				<a href="#faq">FAQ</a>
+			</nav>
+			<div class="header-actions">
+				<button class="button button-small button-outline sample-cta" type="button" data-open-sample>Free Sample</button>
+				<a class="button button-small button-primary header-cta" href="#pricing">Buy eBook</a>
+			</div>
+		</div>
+	</header>
+
+	<main id="top">
+		<section class="hero section-wrap">
+			<div class="hero-copy">
+				<p class="eyebrow"><span class="status-dot"></span>{hero.eyebrow}</p>
+				<h1>{hero.title}{' '}<span class="title-accent">{hero.highlight}</span></h1>
+				<p class="hero-description">{hero.description}</p>
+					<div class="hero-actions">
+					<a class="button button-primary" href="#pricing">Get Your Copy Now <span aria-hidden="true">↗</span></a>
+					<button class="button button-quiet" type="button" data-open-sample>Read Chapter 1 Free <span aria-hidden="true">↓</span></button>
+				</div>
+				<div class="proof-line">
+					<div class="rating" aria-label={`${hero.rating} out of 5 stars`}>
+						<span class="stars" aria-hidden="true">★★★★★</span>
+						<strong>{hero.rating}</strong>
+						<span>{hero.reviewCount}</span>
+					</div>
+					<span class="proof-divider" aria-hidden="true"></span>
+					<p><span class="proof-mark" aria-hidden="true">↓</span> {hero.formats}</p>
+				</div>
+			</div>
+			<div class="book-stage" aria-label="Book cover preview">
+				<div class="stage-note">A practical guide<br />for the modern web</div>
+				<div class="book-shadow" aria-hidden="true"></div>
+				<div class="book">
+					<div class="book-pages" aria-hidden="true"></div>
+					<div class="book-spine"><span>{hero.bookTitle}</span></div>
+					<div class="book-cover">
+						<div class="cover-top"><span>Ebook Edition</span></div>
+						<div class="cover-art" aria-hidden="true"><span>&lt; / &gt;</span><i></i><i></i><i></i></div>
+						<div class="cover-title">
+							<p>THE ENGINEER'S FIELD GUIDE</p>
+							<h2>{hero.bookTitle}</h2>
+							<p>{hero.bookSubtitle}</p>
+						</div>
+						<div class="cover-bottom"><span>{hero.authorName}</span><span>{hero.authorRole}</span></div>
+					</div>
+				</div>
+				<div class="stage-caption">420+ pages <span>·</span> built for practice</div>
+			</div>
+		</section>
+
+		<section class="benefits section-band" id="benefits">
+			<div class="section-wrap">
+				<div class="section-heading">
+					<p class="eyebrow">{page.benefitsHeading.eyebrow}</p>
+					<h2>{page.benefitsHeading.title}</h2>
+					<p>{page.benefitsHeading.description}</p>
+				</div>
+				<div class="benefit-grid">
+					{page.benefits.map((benefit, index) => (
+						<article class="benefit-item">
+							<div class={`benefit-symbol tone-${index % 3}`} aria-hidden="true">{benefit.symbol}</div>
+							<h3>{benefit.title}</h3>
+							<p>{benefit.description}</p>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="chapters section-wrap" id="chapters">
+			<div class="chapter-intro section-heading">
+				<p class="eyebrow">{page.chaptersHeading.eyebrow}</p>
+				<h2>{page.chaptersHeading.title}</h2>
+				<p>{page.chaptersHeading.description}</p>
+			</div>
+			<div class="chapter-list">
+				{page.chapters.map((chapter, index) => (
+					<details class="chapter-row" open={index === 0}>
+						<summary>
+							<span class="chapter-number">{String(index + 1).padStart(2, '0')}</span>
+							<span class="chapter-title">{chapter.title}</span>
+							<span class="chapter-toggle" aria-hidden="true">+</span>
+						</summary>
+						<ul>{chapter.topics?.map((topic) => <li>{topic}</li>)}</ul>
+					</details>
+				))}
+				<button class="text-link" type="button" data-open-sample>Download full 12-chapter outline & sample chapter <span aria-hidden="true">↓</span></button>
+			</div>
+		</section>
+
+		<section class="author-section section-band" id="author">
+			<div class="section-wrap author-card">
+			<div class="author-layout">
+				<div class="author-visual">
+					<img src={authorPortrait} alt={page.author.name} loading="lazy" />
+					<div class="experience-tag"><strong>{page.author.experience}</strong></div>
+				</div>
+				<div class="author-copy">
+					<p class="eyebrow">Meet the Author</p>
+					<h2>{page.author.name}</h2>
+					<p>{page.author.bio}</p>
+					<div class="author-stats">
+						<div><strong>{page.author.newsletter}</strong><span>Tech Newsletter Subs</span></div>
+						<div><strong>{page.author.openSource}</strong><span>Open Source Contribs</span></div>
+						<div><strong>{page.author.students}</strong><span>Students Taught</span></div>
+					</div>
+					<div class="social-links" aria-label="Author social links">
+						<a href="#" aria-label="X">X</a>
+						<a href="#" aria-label="GitHub">GH</a>
+						<a href="#" aria-label="LinkedIn">in</a>
+					</div>
+				</div>
+			</div>
+			</div>
+		</section>
+
+		<section class="reviews section-wrap" id="reviews">
+			<div class="section-heading">
+				<p class="eyebrow">{page.reviewsHeading.eyebrow}</p>
+				<h2>{page.reviewsHeading.title}</h2>
+				<p>{page.reviewsHeading.description}</p>
+			</div>
+			<div class="review-grid">
+				{page.testimonials.map((review, index) => (
+					<article class="review-item">
+						<p class="review-stars" aria-label={`${review.rating} out of 5 stars`}>{'★'.repeat(review.rating ?? 5)}</p>
+						<blockquote>“{review.quote}”</blockquote>
+						<div class="review-person">
+							<img src={image(review.portraitUrl, defaultLandingPage.testimonials[index % defaultLandingPage.testimonials.length].portraitUrl)} alt="" loading="lazy" />
+							<div><strong>{review.name}</strong><span>{review.role}</span></div>
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+
+		<section class="pricing-section section-band" id="pricing">
+			<div class="section-wrap">
+				<div class="section-heading">
+					<p class="eyebrow">{page.pricingHeading.eyebrow}</p>
+					<h2>{page.pricingHeading.title}</h2>
+					<p>{page.pricingHeading.description}</p>
+				</div>
+				<div class="pricing-grid">
+					{page.plans.map((plan) => (
+						<article class:list={["pricing-plan", { featured: plan.featured }]}>
+							{plan.featured && <span class="popular-tag">Most Popular</span>}
+							<div>
+								<div class="plan-topline"><h3>{plan.name}</h3><span>{plan.label}</span></div>
+								<p class="plan-description">{plan.description}</p>
+								<p class="plan-price"><strong>{plan.price}</strong><del>{plan.comparePrice}</del></p>
+								<ul class="plan-features">
+									{plan.features?.map((feature) => <li class:list={{ excluded: !feature.included }}><span aria-hidden="true">{feature.included ? '✓' : '−'}</span>{feature.label}</li>)}
+								</ul>
+							</div>
+							<button class:list={["button", plan.featured ? "button-primary" : "button-dark"]} type="button" data-purchase={plan.name}>{plan.buttonLabel}</button>
+						</article>
+					))}
+				</div>
+				<p class="guarantee"><span aria-hidden="true">✳</span>{page.guarantee}</p>
+			</div>
+		</section>
+
+		<section class="faq section-wrap" id="faq">
+			<div class="faq-heading">
+				<p class="eyebrow">{page.faqHeading.eyebrow}</p>
+				<h2>{page.faqHeading.title}</h2>
+			</div>
+			<div class="faq-list">
+				{page.faqs.map((faq) => (
+					<details class="faq-item">
+						<summary>{faq.question}<span aria-hidden="true">+</span></summary>
+						<p>{faq.answer}</p>
+					</details>
+				))}
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="section-wrap footer-inner">
+			<a class="wordmark" href="#top"><span>MMWD</span></a>
+			<p>{page.footerCopyright}</p>
+			<nav aria-label="Footer navigation"><a href="#privacy">Privacy Policy</a><a href="#terms">Terms of Service</a><a href="mailto:hello@example.com">Contact Support</a></nav>
+		</div>
+	</footer>
+
+	<dialog class="sample-dialog" aria-labelledby="sample-title">
+		<button class="dialog-close" type="button" aria-label="Close dialog" data-close-sample>×</button>
+		<div class="dialog-content" data-sample-form-view>
+			<p class="eyebrow">Free sample chapter</p>
+			<h2 id="sample-title">Get Chapter 1 Free</h2>
+			<p>“Foundations of Modern Web Architecture” (45 pages PDF)</p>
+			<form data-sample-form>
+				<label>First Name<input name="name" autocomplete="given-name" placeholder="Alex" required /></label>
+				<label>Email Address<input name="email" type="email" autocomplete="email" placeholder="alex@company.com" required /></label>
+				<button class="button button-primary" type="submit">Send PDF to My Inbox <span aria-hidden="true">↗</span></button>
+			</form>
+			<p class="form-note">No spam ever. Unsubscribe at any time in 1-click.</p>
+		</div>
+		<div class="dialog-content success-view" data-sample-success hidden>
+			<p class="eyebrow">Request received</p>
+			<h2>Check Your Inbox!</h2>
+			<p>We've sent Chapter 1 directly to your email address.</p>
+			<button class="button button-dark" type="button" data-close-sample>Close Window</button>
+		</div>
+	</dialog>
+
+	<script>
+		const sampleDialog = document.querySelector<HTMLDialogElement>('.sample-dialog');
+		const sampleForm = document.querySelector<HTMLFormElement>('[data-sample-form]');
+		const sampleFormView = document.querySelector<HTMLElement>('[data-sample-form-view]');
+		const sampleSuccess = document.querySelector<HTMLElement>('[data-sample-success]');
+
+		document.querySelectorAll<HTMLButtonElement>('[data-open-sample]').forEach((button) => {
+			button.addEventListener('click', () => sampleDialog?.showModal());
+		});
+
+		document.querySelectorAll<HTMLButtonElement>('[data-close-sample]').forEach((button) => {
+			button.addEventListener('click', () => sampleDialog?.close());
+		});
+
+		sampleForm?.addEventListener('submit', (event) => {
+			event.preventDefault();
+			if (!sampleForm.reportValidity()) return;
+			if (sampleFormView) sampleFormView.hidden = true;
+			if (sampleSuccess) sampleSuccess.hidden = false;
+		});
+
+		sampleDialog?.addEventListener('click', (event) => {
+			if (event.target === sampleDialog) sampleDialog.close();
+		});
+
+		document.querySelectorAll<HTMLButtonElement>('[data-purchase]').forEach((button) => {
+			button.addEventListener('click', () => {
+				window.alert(`Redirecting to secure Stripe checkout for "${button.dataset.purchase}"!`);
+			});
+		});
+	</script>
 </Layout>
