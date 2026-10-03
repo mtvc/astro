@@ -45,7 +45,7 @@ export const defaultLandingPage: LandingPage = {
 	author: {
 		name: 'Alexandre Rivera',
 		bio: 'Alexandre is a Principal Staff Software Engineer who has led frontend engineering teams at top Silicon Valley SaaS enterprises. He has architected web apps used by over 20 million daily active users, built open-source frameworks, and mentored hundreds of developers transitioning into senior technical roles.',
-		portraitUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=720&q=85',
+		portraitUrl: '/images/author.jpg',
 		experience: '15+ Yrs Exp',
 		newsletter: '150k+',
 		openSource: '45+',
@@ -57,9 +57,9 @@ export const defaultLandingPage: LandingPage = {
 		description: 'Here is what software engineers and tech leaders have to say after reading.',
 	},
 	testimonials: [
-		{ _key: 'review-01', quote: 'This book directly helped me pass my Senior Frontend Architect interview. The chapter on Server Components alone is worth 10x the price of the book.', name: 'David K.', role: 'Senior Staff Dev @ Stripe', rating: 5, portraitUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&q=80' },
-		{ _key: 'review-02', quote: 'Finally a resource that isn\'t just a restatement of official docs. Alexandre shares real production pitfalls and architectural compromises you only learn the hard way.', name: 'Elena Rostova', role: 'Lead Engineer @ Vercel ecosystem', rating: 5, portraitUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80' },
-		{ _key: 'review-03', quote: 'The code repository provided with the Complete Bundle is exceptionally clean. It served as the exact starter template for our team\'s latest AI micro-SaaS.', name: 'Marcus Thorne', role: 'CTO @ TechFlow Labs', rating: 5, portraitUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80' },
+		{ _key: 'review-01', quote: 'This book directly helped me pass my Senior Frontend Architect interview. The chapter on Server Components alone is worth 10x the price of the book.', name: 'David K.', role: 'Senior Staff Dev @ Stripe', rating: 5, portraitUrl: '/images/reviewer-david.jpg' },
+		{ _key: 'review-02', quote: 'Finally a resource that isn\'t just a restatement of official docs. Alexandre shares real production pitfalls and architectural compromises you only learn the hard way.', name: 'Elena Rostova', role: 'Lead Engineer @ Vercel ecosystem', rating: 5, portraitUrl: '/images/reviewer-elena.jpg' },
+		{ _key: 'review-03', quote: 'The code repository provided with the Complete Bundle is exceptionally clean. It served as the exact starter template for our team\'s latest AI micro-SaaS.', name: 'Marcus Thorne', role: 'CTO @ TechFlow Labs', rating: 5, portraitUrl: '/images/reviewer-marcus.jpg' },
 	],
 	pricingHeading: {
 		eyebrow: 'Transparent Pricing',
