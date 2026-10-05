@@ -1,8 +1,8 @@
 import type { LandingPage } from '../types/landing-page';
 
-const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'xdjiyqmc';
-const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'ebook_data';
-const apiVersion = import.meta.env.PUBLIC_SANITY_API_VERSION || '2026-10-02';
+const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
+const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
+const apiVersion = import.meta.env.PUBLIC_SANITY_API_VERSION;
 const apiToken = import.meta.env.SANITY_API_TOKEN;
 
 const landingPageQuery = `*[_type == "ebookLandingPage"] | order(_updatedAt desc)[0]{
